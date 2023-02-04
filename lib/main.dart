@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:missa_maa_oon/determine_position.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,12 +34,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _location = 'Ei tiedossa';
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _determinePosition() async {
+    try {
+      var position = await determinePosition();
+
+      setState(() {
+        _location = 'Lat: ${position.latitude}, lon: ${position.longitude}';
+      });
+    } on Exception catch (e) {
+      _location = 'Virhe: $e';
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 
   @override
@@ -50,20 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            ElevatedButton(
+              onPressed: _determinePosition,
+              child:
+                  const Text('Paikanna minut', style: TextStyle(fontSize: 24)),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text(_location, style: Theme.of(context).textTheme.headlineMedium),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
