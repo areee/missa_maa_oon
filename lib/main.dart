@@ -35,14 +35,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _location = 'Ei tiedossa';
+  var _location = 'Ei tiedossa';
+  var _loading = false;
 
   void _determinePosition() async {
     try {
+      setState(() {
+        _loading = true;
+      });
       var position = await determinePosition();
 
       setState(() {
-        _location = 'Lat: ${position.latitude}, lon: ${position.longitude}';
+        _location = '${position.latitude} ${position.longitude}';
+        _loading = false;
       });
     } on Exception catch (e) {
       _location = 'Virhe: $e';
@@ -67,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              onPressed: _determinePosition,
+              onPressed: _loading ? null : _determinePosition,
               child: const Text(
                 'Paikanna minut',
                 style: TextStyle(fontSize: 24),
@@ -75,11 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(_location,
-                  style: Theme.of(context).textTheme.headlineMedium),
+              child: _loading
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      _location,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
             ),
             ElevatedButton.icon(
-              onPressed: _shareLocation,
+              onPressed: _loading ? null : _shareLocation,
               icon: const Icon(Icons.share),
               label: const Text(
                 'Jaa sijaintini',
