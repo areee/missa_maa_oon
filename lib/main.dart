@@ -15,7 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.green,
       ),
       home: const MyHomePage(title: appName),
     );
