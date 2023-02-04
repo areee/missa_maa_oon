@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/determine_position.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void _shareLocation() {
+    Share.share(_location);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +68,24 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ElevatedButton(
               onPressed: _determinePosition,
-              child:
-                  const Text('Paikanna minut', style: TextStyle(fontSize: 24)),
+              child: const Text(
+                'Paikanna minut',
+                style: TextStyle(fontSize: 24),
+              ),
             ),
-            Text(_location, style: Theme.of(context).textTheme.headlineMedium),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(_location,
+                  style: Theme.of(context).textTheme.headlineMedium),
+            ),
+            ElevatedButton.icon(
+              onPressed: _shareLocation,
+              icon: const Icon(Icons.share),
+              label: const Text(
+                'Jaa sijaintini',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
           ],
         ),
       ),
