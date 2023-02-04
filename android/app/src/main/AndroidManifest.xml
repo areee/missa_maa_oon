@@ -5,7 +5,7 @@
    <application
         android:label="Missä mää oon?"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher_mmo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
