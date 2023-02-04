@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.areee.missa_maa_oon">
    <application
-        android:label="missa_maa_oon"
+        android:label="Missä mää oon?"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
