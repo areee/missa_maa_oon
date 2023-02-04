@@ -1,6 +1,6 @@
-# missa_saa_oot
+# missa_maa_oon
 
-Save your current location
+Missä mää oon? – Save your current location
 
 ## Getting Started
 
