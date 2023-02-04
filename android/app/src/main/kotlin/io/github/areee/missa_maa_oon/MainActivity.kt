@@ -1,4 +1,4 @@
-package io.github.areee.missa_saa_oot
+package io.github.areee.missa_maa_oon
 
 import io.flutter.embedding.android.FlutterActivity
 

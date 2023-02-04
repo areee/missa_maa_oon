@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.areee.missa_saa_oot">
+    package="io.github.areee.missa_maa_oon">
    <application
-        android:label="missa_saa_oot"
+        android:label="missa_maa_oon"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
