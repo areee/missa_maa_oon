@@ -54,7 +54,7 @@ jobs:
 
       # Package the build.
       - name: Rename build for Android
-        run: mv app-release.apk $GITHUB_WORKSPACE/flutter_gallery_Android.apk
+        run: mv app-release.apk $GITHUB_WORKSPACE/missa_maa_oon_Android.apk
         working-directory: build/app/outputs/flutter-apk
 
       # Upload the build.
@@ -68,4 +68,4 @@ jobs:
           draft: true
           prerelease: false
           generate_release_notes: true
-          files: flutter_gallery_Android.apk
+          files: missa_maa_oon_Android.apk
