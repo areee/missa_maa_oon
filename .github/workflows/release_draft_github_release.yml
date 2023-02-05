@@ -1,0 +1,71 @@
+# Source: https://github.com/flutter/gallery/blob/main/.github/workflows/release_draft_github_release.yml
+# (Edited by Arttu Ylhavuori)
+
+name: Draft Github Release
+on:
+  # Enable manual run
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Tag to create (e.g. v0.1.0). Must include 'v' and must match pubspec"
+        required: true
+        default: "v0.1.0"
+        type: string
+
+# Declare default permissions as read only.
+permissions: read-all
+
+jobs:
+  create-build:
+    name: Create Android build
+    runs-on: ubuntu-latest
+    steps:
+      # Set up Flutter.
+      - name: Clone Flutter repository with master channel
+        uses: subosito/flutter-action@v2
+      - name: Install Android dependencies
+        uses: actions/setup-java@3
+        with:
+          java-version: "12.x"
+          distribution: temurin
+      - run: flutter doctor -v
+      # Checkout gallery code, recreate missing files, and get packages.
+      - name: Checkout gallery code
+        uses: actions/checkout@3
+      - run: flutter create .
+      - run: flutter pub get
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+
+      # Build the application.
+      - run: flutter build -v apk --release
+
+      # Package the build.
+      - name: Rename build for Android
+        run: mv app-release.apk $GITHUB_WORKSPACE/flutter_gallery_Android.apk
+        working-directory: build/app/outputs/flutter-apk
+
+      # Upload the build.
+      - name: Draft Github release and add packaged build to release draft
+        id: create_release_and_upload_release_asset
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MISSAMAAOON_RELEASEBOT_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          draft: true
+          prerelease: false
+          generate_release_notes: true
+          files: flutter_gallery_Android.apk
