@@ -21,6 +21,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorSchemeSeed: Colors.green,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.green,
+      ),
       home: const MyHomePage(title: appName),
     );
   }
@@ -61,19 +66,38 @@ class _MyHomePageState extends State<MyHomePage> {
     Share.share(_location);
   }
 
+  void _showHistory() {
+    if (kDebugMode) {
+      print('Show history');
+    }
+  }
+
+  void _saveLocation() {
+    if (kDebugMode) {
+      print('Save location');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: _loading ? null : _showHistory,
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: _loading ? null : _determinePosition,
-              child: const Text(
+              icon: const Icon(Icons.location_searching),
+              label: const Text(
                 'Paikanna minut',
                 style: TextStyle(fontSize: 24),
               ),
@@ -92,6 +116,14 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.share),
               label: const Text(
                 'Jaa sijaintini',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: _loading ? null : _saveLocation,
+              icon: const Icon(Icons.save),
+              label: const Text(
+                'Tallenna sijaintini',
                 style: TextStyle(fontSize: 24),
               ),
             ),
