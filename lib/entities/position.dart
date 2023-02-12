@@ -9,4 +9,8 @@ class Position {
   late double latitude;
 
   late double longitude;
+
+  DateTime created = DateTime.now();
+
+  DateTime updated = DateTime.now();
 }

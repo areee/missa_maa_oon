@@ -17,15 +17,25 @@ const PositionSchema = CollectionSchema(
   name: r'Position',
   id: 5246518687786643573,
   properties: {
-    r'latitude': PropertySchema(
+    r'created': PropertySchema(
       id: 0,
+      name: r'created',
+      type: IsarType.dateTime,
+    ),
+    r'latitude': PropertySchema(
+      id: 1,
       name: r'latitude',
       type: IsarType.double,
     ),
     r'longitude': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'longitude',
       type: IsarType.double,
+    ),
+    r'updated': PropertySchema(
+      id: 3,
+      name: r'updated',
+      type: IsarType.dateTime,
     )
   },
   estimateSize: _positionEstimateSize,
@@ -57,8 +67,10 @@ void _positionSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDouble(offsets[0], object.latitude);
-  writer.writeDouble(offsets[1], object.longitude);
+  writer.writeDateTime(offsets[0], object.created);
+  writer.writeDouble(offsets[1], object.latitude);
+  writer.writeDouble(offsets[2], object.longitude);
+  writer.writeDateTime(offsets[3], object.updated);
 }
 
 Position _positionDeserialize(
@@ -68,9 +80,11 @@ Position _positionDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Position();
+  object.created = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.latitude = reader.readDouble(offsets[0]);
-  object.longitude = reader.readDouble(offsets[1]);
+  object.latitude = reader.readDouble(offsets[1]);
+  object.longitude = reader.readDouble(offsets[2]);
+  object.updated = reader.readDateTime(offsets[3]);
   return object;
 }
 
@@ -82,9 +96,13 @@ P _positionDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
       return (reader.readDouble(offset)) as P;
+    case 2:
+      return (reader.readDouble(offset)) as P;
+    case 3:
+      return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -179,6 +197,59 @@ extension PositionQueryWhere on QueryBuilder<Position, Position, QWhereClause> {
 
 extension PositionQueryFilter
     on QueryBuilder<Position, Position, QFilterCondition> {
+  QueryBuilder<Position, Position, QAfterFilterCondition> createdEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'created',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> createdGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'created',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> createdLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'created',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> createdBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'created',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Position, Position, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -354,6 +425,59 @@ extension PositionQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> updatedEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'updated',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> updatedGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'updated',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> updatedLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'updated',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> updatedBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'updated',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension PositionQueryObject
@@ -363,6 +487,18 @@ extension PositionQueryLinks
     on QueryBuilder<Position, Position, QFilterCondition> {}
 
 extension PositionQuerySortBy on QueryBuilder<Position, Position, QSortBy> {
+  QueryBuilder<Position, Position, QAfterSortBy> sortByCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterSortBy> sortByCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.desc);
+    });
+  }
+
   QueryBuilder<Position, Position, QAfterSortBy> sortByLatitude() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'latitude', Sort.asc);
@@ -386,10 +522,34 @@ extension PositionQuerySortBy on QueryBuilder<Position, Position, QSortBy> {
       return query.addSortBy(r'longitude', Sort.desc);
     });
   }
+
+  QueryBuilder<Position, Position, QAfterSortBy> sortByUpdated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterSortBy> sortByUpdatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updated', Sort.desc);
+    });
+  }
 }
 
 extension PositionQuerySortThenBy
     on QueryBuilder<Position, Position, QSortThenBy> {
+  QueryBuilder<Position, Position, QAfterSortBy> thenByCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterSortBy> thenByCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'created', Sort.desc);
+    });
+  }
+
   QueryBuilder<Position, Position, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -425,10 +585,28 @@ extension PositionQuerySortThenBy
       return query.addSortBy(r'longitude', Sort.desc);
     });
   }
+
+  QueryBuilder<Position, Position, QAfterSortBy> thenByUpdated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterSortBy> thenByUpdatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updated', Sort.desc);
+    });
+  }
 }
 
 extension PositionQueryWhereDistinct
     on QueryBuilder<Position, Position, QDistinct> {
+  QueryBuilder<Position, Position, QDistinct> distinctByCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'created');
+    });
+  }
+
   QueryBuilder<Position, Position, QDistinct> distinctByLatitude() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'latitude');
@@ -438,6 +616,12 @@ extension PositionQueryWhereDistinct
   QueryBuilder<Position, Position, QDistinct> distinctByLongitude() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'longitude');
+    });
+  }
+
+  QueryBuilder<Position, Position, QDistinct> distinctByUpdated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'updated');
     });
   }
 }
@@ -450,6 +634,12 @@ extension PositionQueryProperty
     });
   }
 
+  QueryBuilder<Position, DateTime, QQueryOperations> createdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'created');
+    });
+  }
+
   QueryBuilder<Position, double, QQueryOperations> latitudeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'latitude');
@@ -459,6 +649,12 @@ extension PositionQueryProperty
   QueryBuilder<Position, double, QQueryOperations> longitudeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'longitude');
+    });
+  }
+
+  QueryBuilder<Position, DateTime, QQueryOperations> updatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'updated');
     });
   }
 }
