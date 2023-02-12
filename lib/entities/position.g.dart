@@ -82,8 +82,8 @@ Position _positionDeserialize(
   final object = Position();
   object.created = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.latitude = reader.readDouble(offsets[1]);
-  object.longitude = reader.readDouble(offsets[2]);
+  object.latitude = reader.readDoubleOrNull(offsets[1]);
+  object.longitude = reader.readDoubleOrNull(offsets[2]);
   object.updated = reader.readDateTime(offsets[3]);
   return object;
 }
@@ -98,9 +98,9 @@ P _positionDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 2:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 3:
       return (reader.readDateTime(offset)) as P;
     default:
@@ -302,8 +302,24 @@ extension PositionQueryFilter
     });
   }
 
+  QueryBuilder<Position, Position, QAfterFilterCondition> latitudeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'latitude',
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> latitudeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'latitude',
+      ));
+    });
+  }
+
   QueryBuilder<Position, Position, QAfterFilterCondition> latitudeEqualTo(
-    double value, {
+    double? value, {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -316,7 +332,7 @@ extension PositionQueryFilter
   }
 
   QueryBuilder<Position, Position, QAfterFilterCondition> latitudeGreaterThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -331,7 +347,7 @@ extension PositionQueryFilter
   }
 
   QueryBuilder<Position, Position, QAfterFilterCondition> latitudeLessThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -346,8 +362,8 @@ extension PositionQueryFilter
   }
 
   QueryBuilder<Position, Position, QAfterFilterCondition> latitudeBetween(
-    double lower,
-    double upper, {
+    double? lower,
+    double? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     double epsilon = Query.epsilon,
@@ -364,8 +380,24 @@ extension PositionQueryFilter
     });
   }
 
+  QueryBuilder<Position, Position, QAfterFilterCondition> longitudeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'longitude',
+      ));
+    });
+  }
+
+  QueryBuilder<Position, Position, QAfterFilterCondition> longitudeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'longitude',
+      ));
+    });
+  }
+
   QueryBuilder<Position, Position, QAfterFilterCondition> longitudeEqualTo(
-    double value, {
+    double? value, {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -378,7 +410,7 @@ extension PositionQueryFilter
   }
 
   QueryBuilder<Position, Position, QAfterFilterCondition> longitudeGreaterThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -393,7 +425,7 @@ extension PositionQueryFilter
   }
 
   QueryBuilder<Position, Position, QAfterFilterCondition> longitudeLessThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -408,8 +440,8 @@ extension PositionQueryFilter
   }
 
   QueryBuilder<Position, Position, QAfterFilterCondition> longitudeBetween(
-    double lower,
-    double upper, {
+    double? lower,
+    double? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     double epsilon = Query.epsilon,
@@ -640,13 +672,13 @@ extension PositionQueryProperty
     });
   }
 
-  QueryBuilder<Position, double, QQueryOperations> latitudeProperty() {
+  QueryBuilder<Position, double?, QQueryOperations> latitudeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'latitude');
     });
   }
 
-  QueryBuilder<Position, double, QQueryOperations> longitudeProperty() {
+  QueryBuilder<Position, double?, QQueryOperations> longitudeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'longitude');
     });

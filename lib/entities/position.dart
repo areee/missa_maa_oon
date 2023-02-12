@@ -6,9 +6,9 @@ part 'position.g.dart';
 class Position {
   Id id = Isar.autoIncrement;
 
-  late double latitude;
+  double? latitude;
 
-  late double longitude;
+  double? longitude;
 
   DateTime created = DateTime.now();
 
