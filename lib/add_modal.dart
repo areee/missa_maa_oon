@@ -16,6 +16,12 @@ class _AddModalState extends State<AddModal> {
   var _position = Position();
   var _loading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _determinePosition();
+  }
+
   void _determinePosition() async {
     try {
       setState(() {
