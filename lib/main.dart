@@ -50,6 +50,8 @@ class MyHomePage extends StatelessWidget {
               onPressed: () async {
                 if (kDebugMode) {
                   print('TODO: Vie kaikki tietokannasta');
+                  var positions = await service.getAllPositions();
+                  print(positions);
                 }
               },
             ),
