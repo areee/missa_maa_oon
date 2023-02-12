@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/add_modal.dart';
+import 'package:missa_maa_oon/app_bar_actions.dart';
 import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
@@ -43,19 +44,20 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.save),
-              tooltip: 'Vie kaikki tietokannasta',
-              onPressed: () async {
-                if (kDebugMode) {
-                  print('TODO: Vie kaikki tietokannasta');
-                  var positions = await service.getAllPositions();
-                  print(positions);
-                }
-              },
-            ),
-          ],
+          actions: appBarActions,
+          // actions: [
+          //   IconButton(
+          //     icon: const Icon(Icons.save),
+          //     tooltip: 'Vie kaikki tietokannasta',
+          //     onPressed: () async {
+          //       if (kDebugMode) {
+          //         print('TODO: Vie kaikki tietokannasta');
+          //         var positions = await service.getAllPositions();
+          //         print(positions);
+          //       }
+          //     },
+          //   ),
+          // ],
         ),
         body: StreamBuilder<List<Position>>(
           stream: service.listenToPositions(),
