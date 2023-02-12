@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/add_modal.dart';
+import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
 
@@ -43,16 +45,11 @@ class MyHomePage extends StatelessWidget {
           title: Text(title),
           actions: [
             IconButton(
-              icon: const Icon(Icons.delete),
-              tooltip: 'Clean database',
+              icon: const Icon(Icons.save),
+              tooltip: 'Vie kaikki tietokannasta',
               onPressed: () async {
-                await service.cleanDb();
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Database cleaned'),
-                    ),
-                  );
+                if (kDebugMode) {
+                  print('TODO: Vie kaikki tietokannasta');
                 }
               },
             ),
@@ -66,11 +63,13 @@ class MyHomePage extends StatelessWidget {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final position = snapshot.data![index];
-                  return ListTile(
-                    title: Text(
-                        'Latitude: ${position.latitude}, longtitude: ${position.longitude}'),
-                    subtitle: Text(
-                        'Created: ${position.created}, updated: ${position.updated}'),
+                  return Card(
+                    child: ListTile(
+                      title: Text(
+                          'Leveysaste: ${position.latitude}, pituusaste: ${position.longitude}'),
+                      subtitle:
+                          Text('Lisätty: ${formatDateTime(position.created)}'),
+                    ),
                   );
                 },
               );
