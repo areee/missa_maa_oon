@@ -69,11 +69,11 @@ class _AddModalState extends State<AddModal> {
               : Column(
                   children: [
                     Text(
-                      'Latitude: ${_position.latitude ?? 'Ei tiedossa'}',
+                      'Leveysaste: ${_position.latitude ?? 'Ei tiedossa'}',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(
-                      'Longitude: ${_position.longitude ?? 'Ei tiedossa'}',
+                      'Pituusaste: ${_position.longitude ?? 'Ei tiedossa'}',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ],
