@@ -39,6 +39,36 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({super.key, required this.title});
   final String title;
   final service = IsarService();
+  late BuildContext buildContext;
+
+  Future<void> _showMyDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Haluatko varmasti poistaa kaikki tiedot?'),
+          actions: [
+            TextButton(
+              child: const Text('Peruuta'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Poista'),
+              onPressed: () {
+                if (kDebugMode) {
+                  print('TODO: Poista kaikki tietokannasta');
+                  service.cleanDb();
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void onSelectedAppBarValues(AppBarValues result) async {
     switch (result) {
@@ -50,10 +80,8 @@ class MyHomePage extends StatelessWidget {
         }
         break;
       case AppBarValues.deleteAll:
-        if (kDebugMode) {
-          print('TODO: Poista kaikki tietokannasta');
-          // await service.cleanDb();
-        }
+        _showMyDialog(buildContext);
+
         break;
       case AppBarValues.about:
         if (kDebugMode) {
@@ -67,6 +95,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    buildContext = context;
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
