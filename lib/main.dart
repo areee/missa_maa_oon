@@ -5,6 +5,7 @@ import 'package:missa_maa_oon/app_bar_actions.dart';
 import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
+import 'package:missa_maa_oon/static.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,25 +40,37 @@ class MyHomePage extends StatelessWidget {
   final String title;
   final service = IsarService();
 
+  void onSelectedAppBarValues(AppBarValues result) async {
+    switch (result) {
+      case AppBarValues.export:
+        if (kDebugMode) {
+          print('TODO: Vie kaikki tietokannasta');
+          var positions = await service.getAllPositions();
+          print(positions);
+        }
+        break;
+      case AppBarValues.deleteAll:
+        if (kDebugMode) {
+          print('TODO: Poista kaikki tietokannasta');
+          // await service.cleanDb();
+        }
+        break;
+      case AppBarValues.about:
+        if (kDebugMode) {
+          print('TODO: Tietoja sovelluksesta');
+        }
+        break;
+      default:
+        throw Exception('Unknown AppBarValues');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
-          actions: appBarActions,
-          // actions: [
-          //   IconButton(
-          //     icon: const Icon(Icons.save),
-          //     tooltip: 'Vie kaikki tietokannasta',
-          //     onPressed: () async {
-          //       if (kDebugMode) {
-          //         print('TODO: Vie kaikki tietokannasta');
-          //         var positions = await service.getAllPositions();
-          //         print(positions);
-          //       }
-          //     },
-          //   ),
-          // ],
+          actions: appBarActions(onSelectedAppBarValues),
         ),
         body: StreamBuilder<List<Position>>(
           stream: service.listenToPositions(),
