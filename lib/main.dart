@@ -1,27 +1,43 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:missa_maa_oon/determine_position.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:missa_maa_oon/add_modal.dart';
+import 'package:missa_maa_oon/app_bar_actions.dart';
+import 'package:missa_maa_oon/date_helper.dart';
+import 'package:missa_maa_oon/entities/position.dart';
+import 'package:missa_maa_oon/isar_service.dart';
+import 'package:missa_maa_oon/static.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   static const appName = 'Missä mää oon?';
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: appName,
+      title: MyApp.appName,
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: Colors.green,
       ),
-      home: const MyHomePage(title: appName),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.green,
+      ),
+      home: const MyHomePage(title: MyApp.appName),
     );
   }
 }
@@ -35,69 +51,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var _location = 'Ei tiedossa';
-  var _loading = false;
+  final service = IsarService();
 
-  void _determinePosition() async {
-    try {
-      setState(() {
-        _loading = true;
-      });
-      var position = await determinePosition();
-
-      setState(() {
-        _location = '${position.latitude} ${position.longitude}';
-        _loading = false;
-      });
-    } on Exception catch (e) {
-      _location = 'Virhe: $e';
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+  @override
+  void dispose() async {
+    await service.close();
+    await deleteTemporaryFile();
+    super.dispose();
   }
 
-  void _shareLocation() {
-    Share.share(_location);
+  Future<void> deleteTemporaryFile() async {
+    var tempPath = (await getTemporaryDirectory()).path;
+    var tempFile = File('$tempPath/$tempFileName');
+    await tempFile.delete();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: _loading ? null : _determinePosition,
-              child: const Text(
-                'Paikanna minut',
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _loading
-                  ? const CircularProgressIndicator()
-                  : Text(
-                      _location,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-            ),
-            ElevatedButton.icon(
-              onPressed: _loading ? null : _shareLocation,
-              icon: const Icon(Icons.share),
-              label: const Text(
-                'Jaa sijaintini',
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: appBarActions(
+            (AppBarValues result) async {
+              await onSelectedAppBarValues(result, context, service);
+            },
+          ),
         ),
-      ),
-    );
+        body: StreamBuilder<List<Position>>(
+          stream: service.listenToPositions(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final position = snapshot.data![index];
+                  return Card(
+                    child: ListTile(
+                      title: Text(
+                          'Leveysaste: ${position.latitude}, pituusaste: ${position.longitude}'),
+                      subtitle:
+                          Text('Lisätty: ${formatDateTime(position.created)}'),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context, builder: (context) => AddModal(service));
+          },
+          tooltip: 'Lisää sijainti',
+          child: const Icon(Icons.add),
+        ));
   }
 }
