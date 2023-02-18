@@ -8,6 +8,11 @@ class IsarService {
     _db = openDb();
   }
 
+  Future<void> close() async {
+    final isar = await _db;
+    await isar.close();
+  }
+
   Future<void> savePosition(Position position) async {
     final isar = await _db;
     isar.writeTxnSync<int>(() => isar.positions.putSync(position));

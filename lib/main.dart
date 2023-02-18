@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/add_modal.dart';
 import 'package:missa_maa_oon/app_bar_actions.dart';
@@ -5,6 +7,7 @@ import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
 import 'package:missa_maa_oon/static.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,6 +52,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final service = IsarService();
+
+  @override
+  void dispose() async {
+    await service.close();
+    await deleteTemporaryFile();
+    super.dispose();
+  }
+
+  Future<void> deleteTemporaryFile() async {
+    var tempPath = (await getTemporaryDirectory()).path;
+    var tempFile = File('$tempPath/$tempFileName');
+    await tempFile.delete();
+  }
 
   @override
   Widget build(BuildContext context) {
