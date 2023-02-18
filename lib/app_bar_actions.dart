@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:missa_maa_oon/about_route.dart';
 import 'package:missa_maa_oon/isar_service.dart';
 import 'package:missa_maa_oon/static.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,7 +56,10 @@ Future<void> onSelectedAppBarValues(
       break;
     case AppBarValues.about:
       if (kDebugMode) {
-        print('TODO: Tietoja sovelluksesta');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AboutRoute()),
+        );
       }
       break;
     default:

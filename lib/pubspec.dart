@@ -3,11 +3,12 @@
 // ignore_for_file: public_member_api_docs, constant_identifier_names, avoid_classes_with_only_static_members
 
 mixin Pubspec {
-  static final buildDate = DateTime.utc(2023, 2, 12, 18, 40, 46);
+  static final buildDate = DateTime.utc(2023, 2, 18, 21, 43, 10);
 
   static const name = 'missa_maa_oon';
 
-  static const description = 'Save your current location';
+  static const description =
+      'Tallenna nykyinen sijaintisi. Save your current location.';
 
   static const publish_to = 'none';
 
@@ -44,6 +45,7 @@ mixin Pubspec {
     'isar_flutter_libs': '^3.0.5',
     'intl': '^0.18.0',
     'about': '^2.1.1',
+    'path_provider': '^2.0.12',
   };
 
   static const dev_dependencies = <dynamic, dynamic>{
@@ -58,5 +60,20 @@ mixin Pubspec {
 
   static const flutter = <dynamic, dynamic>{
     'uses-material-design': true,
+    'assets': <dynamic>[
+      'LICENSE.md',
+      'README.md',
+      'assets/icon.png',
+    ],
   };
+
+  static const authors = <String>[
+    'Arttu Ylhävuori',
+  ];
+
+  static const authorsName = <String>[
+    'Arttu Ylhävuori',
+  ];
+
+  static const authorsEmail = <String>[];
 }
