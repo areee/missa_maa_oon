@@ -6,6 +6,7 @@ import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
 import 'package:missa_maa_oon/static.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -77,6 +78,14 @@ class MyHomePage extends StatelessWidget {
           print('TODO: Vie kaikki tietokannasta');
           var positions = await service.getAllPositions();
           print(positions);
+          Share.shareXFiles([
+            XFile(
+              'positions.txt',
+              bytes: Uint8List.fromList(positions.toString().codeUnits),
+              name: 'positions.txt',
+              mimeType: 'text/plain',
+            )
+          ]);
         }
         break;
       case AppBarValues.deleteAll:
