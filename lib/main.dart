@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/add_modal.dart';
 import 'package:missa_maa_oon/app_bar_actions.dart';
@@ -8,8 +5,6 @@ import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
 import 'package:missa_maa_oon/static.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,57 +39,6 @@ class MyHomePage extends StatelessWidget {
   final String title;
   final service = IsarService();
 
-  void confirmDeletionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Haluatko varmasti poistaa kaikki tiedot?'),
-          actions: [
-            TextButton(
-              child: const Text('Peruuta'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Poista'),
-              onPressed: () {
-                service.cleanDb();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> onSelectedAppBarValues(
-      AppBarValues result, BuildContext context) async {
-    switch (result) {
-      case AppBarValues.export:
-        var tempPath = (await getTemporaryDirectory()).path;
-        var positionsAsTxt = await service.getAllPositionsAsTxt();
-
-        var tempFile = File('$tempPath/$tempFileName');
-        await tempFile.writeAsString(positionsAsTxt);
-
-        Share.shareXFiles([XFile(tempFile.path)]);
-        break;
-      case AppBarValues.deleteAll:
-        confirmDeletionDialog(context);
-        break;
-      case AppBarValues.about:
-        if (kDebugMode) {
-          print('TODO: Tietoja sovelluksesta');
-        }
-        break;
-      default:
-        throw Exception('Unknown AppBarValues');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +46,7 @@ class MyHomePage extends StatelessWidget {
           title: Text(title),
           actions: appBarActions(
             (AppBarValues result) async {
-              await onSelectedAppBarValues(result, context);
+              await onSelectedAppBarValues(result, context, service);
             },
           ),
         ),
