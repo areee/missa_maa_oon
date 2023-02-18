@@ -39,10 +39,9 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({super.key, required this.title});
   final String title;
   final service = IsarService();
-  late BuildContext buildContext;
 
-  Future<void> _showMyDialog(BuildContext context) async {
-    return showDialog<void>(
+  void confirmDeletionDialog(BuildContext context) {
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -70,7 +69,8 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  void onSelectedAppBarValues(AppBarValues result) async {
+  Future<void> onSelectedAppBarValues(
+      AppBarValues result, BuildContext context) async {
     switch (result) {
       case AppBarValues.export:
         if (kDebugMode) {
@@ -80,8 +80,7 @@ class MyHomePage extends StatelessWidget {
         }
         break;
       case AppBarValues.deleteAll:
-        _showMyDialog(buildContext);
-
+        confirmDeletionDialog(context);
         break;
       case AppBarValues.about:
         if (kDebugMode) {
@@ -95,11 +94,14 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    buildContext = context;
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
-          actions: appBarActions(onSelectedAppBarValues),
+          actions: appBarActions(
+            (AppBarValues result) async {
+              await onSelectedAppBarValues(result, context);
+            },
+          ),
         ),
         body: StreamBuilder<List<Position>>(
           stream: service.listenToPositions(),
