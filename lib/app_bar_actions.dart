@@ -12,21 +12,21 @@ List<Widget> appBarActions(Function(AppBarValues) onSelectedAppBarValues) {
           value: AppBarValues.export,
           child: ListTile(
             leading: Icon(Icons.save),
-            title: Text('Vie kaikki tietokannasta'),
+            title: Text('Vie kaikki'),
           ),
         ),
         const PopupMenuItem<AppBarValues>(
           value: AppBarValues.deleteAll,
           child: ListTile(
             leading: Icon(Icons.delete),
-            title: Text('Poista kaikki tietokannasta'),
+            title: Text('Poista kaikki'),
           ),
         ),
         const PopupMenuItem<AppBarValues>(
           value: AppBarValues.about,
           child: ListTile(
             leading: Icon(Icons.info),
-            title: Text('Tietoja sovelluksesta'),
+            title: Text('Tietoja'),
           ),
         ),
       ],

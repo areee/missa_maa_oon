@@ -57,10 +57,7 @@ class MyHomePage extends StatelessWidget {
             TextButton(
               child: const Text('Poista'),
               onPressed: () {
-                if (kDebugMode) {
-                  print('TODO: Poista kaikki tietokannasta');
-                  service.cleanDb();
-                }
+                service.cleanDb();
                 Navigator.of(context).pop();
               },
             ),
