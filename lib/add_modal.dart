@@ -70,20 +70,23 @@ class _AddModalState extends State<AddModal> {
             onPressed: _loading ? null : _determinePosition,
             child: const Text('Hae sijainti'),
           ),
-          _loading
-              ? const CircularProgressIndicator()
-              : Column(
-                  children: [
-                    Text(
-                      'Leveysaste: ${_position.latitude ?? 'Ei tiedossa'}',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    Text(
-                      'Pituusaste: ${_position.longitude ?? 'Ei tiedossa'}',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                  ],
-                ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _loading
+                ? const CircularProgressIndicator()
+                : Column(
+                    children: [
+                      Text(
+                        'Leveysaste: ${_position.latitude ?? 'Ei tiedossa'}',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      Text(
+                        'Pituusaste: ${_position.longitude ?? 'Ei tiedossa'}',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ],
+                  ),
+          ),
           ElevatedButton(
             onPressed: _loading ? null : _savePosition,
             child: const Text('Tallenna'),
