@@ -16,6 +16,6 @@ class Position {
 
   @override
   String toString() {
-    return 'Position{id: $id, latitude: $latitude, longitude: $longitude, created: $created, updated: $updated}';
+    return '$latitude $longitude';
   }
 }

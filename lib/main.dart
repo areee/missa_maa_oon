@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/add_modal.dart';
@@ -6,6 +8,7 @@ import 'package:missa_maa_oon/date_helper.dart';
 import 'package:missa_maa_oon/entities/position.dart';
 import 'package:missa_maa_oon/isar_service.dart';
 import 'package:missa_maa_oon/static.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 void main() {
@@ -71,19 +74,13 @@ class MyHomePage extends StatelessWidget {
       AppBarValues result, BuildContext context) async {
     switch (result) {
       case AppBarValues.export:
-        if (kDebugMode) {
-          print('TODO: Vie kaikki tietokannasta');
-          var positions = await service.getAllPositions();
-          print(positions);
-          Share.shareXFiles([
-            XFile(
-              'positions.txt',
-              bytes: Uint8List.fromList(positions.toString().codeUnits),
-              name: 'positions.txt',
-              mimeType: 'text/plain',
-            )
-          ]);
-        }
+        var tempPath = (await getTemporaryDirectory()).path;
+        var positionsAsTxt = await service.getAllPositionsAsTxt();
+
+        var tempFile = File('$tempPath/$tempFileName');
+        await tempFile.writeAsString(positionsAsTxt);
+
+        Share.shareXFiles([XFile(tempFile.path)]);
         break;
       case AppBarValues.deleteAll:
         confirmDeletionDialog(context);

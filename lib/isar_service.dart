@@ -18,6 +18,21 @@ class IsarService {
     return await isar.positions.where().findAll();
   }
 
+  Future<String> getAllPositionsAsTxt() async {
+    var positions = await getAllPositions();
+    var positionsAsTxt = StringBuffer();
+    var isFirstRow = true;
+    for (var position in positions) {
+      if (isFirstRow) {
+        positionsAsTxt.write('$position');
+        isFirstRow = false;
+      } else {
+        positionsAsTxt.write('\n$position');
+      }
+    }
+    return positionsAsTxt.toString();
+  }
+
   Stream<List<Position>> listenToPositions() async* {
     final isar = await _db;
     yield* isar.positions.where().watch(fireImmediately: true);

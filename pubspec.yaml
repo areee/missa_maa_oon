@@ -17,6 +17,7 @@ dependencies:
   isar_flutter_libs: ^3.0.5
   intl: ^0.18.0
   about: ^2.1.1
+  path_provider: ^2.0.12
 
 dev_dependencies:
   flutter_test:
