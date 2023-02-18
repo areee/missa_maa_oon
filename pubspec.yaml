@@ -28,6 +28,7 @@ dev_dependencies:
   isar_generator: ^3.0.5
   build_runner: ^2.3.3
   pubspec_extract: ^2.0.5
+  flutter_launcher_icons: ^0.11.0
 
 flutter:
   uses-material-design: true
@@ -35,3 +36,15 @@ flutter:
     - LICENSE.md
     - README.md
     - assets/icon.png
+    - assets/source-icon.png
+
+flutter_icons:
+  android: false
+  ios: false
+  image_path: 'assets/source-icon.png'
+  web:
+    generate: false
+  windows:
+    generate: false
+  macos:
+    generate: true

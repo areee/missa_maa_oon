@@ -3,7 +3,7 @@
 // ignore_for_file: public_member_api_docs, constant_identifier_names, avoid_classes_with_only_static_members
 
 mixin Pubspec {
-  static final buildDate = DateTime.utc(2023, 2, 18, 21, 43, 10);
+  static final buildDate = DateTime.utc(2023, 2, 18, 21, 57, 6);
 
   static const name = 'missa_maa_oon';
 
@@ -56,6 +56,7 @@ mixin Pubspec {
     'isar_generator': '^3.0.5',
     'build_runner': '^2.3.3',
     'pubspec_extract': '^2.0.5',
+    'flutter_launcher_icons': '^0.11.0',
   };
 
   static const flutter = <dynamic, dynamic>{
@@ -64,7 +65,23 @@ mixin Pubspec {
       'LICENSE.md',
       'README.md',
       'assets/icon.png',
+      'assets/source-icon.png',
     ],
+  };
+
+  static const flutter_icons = <dynamic, dynamic>{
+    'android': false,
+    'ios': false,
+    'image_path': 'assets/source-icon.png',
+    'web': <dynamic, dynamic>{
+      'generate': false,
+    },
+    'windows': <dynamic, dynamic>{
+      'generate': false,
+    },
+    'macos': <dynamic, dynamic>{
+      'generate': true,
+    },
   };
 
   static const authors = <String>[
