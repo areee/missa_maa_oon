@@ -140,7 +140,7 @@ class MyHomePage extends StatelessWidget {
             showModalBottomSheet(
                 context: context, builder: (context) => AddModal(service));
           },
-          tooltip: 'Add a position',
+          tooltip: 'Lisää sijainti',
           child: const Icon(Icons.add),
         ));
   }
