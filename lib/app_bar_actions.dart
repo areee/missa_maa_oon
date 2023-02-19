@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:missa_maa_oon/about_route.dart';
 import 'package:missa_maa_oon/isar_service.dart';
@@ -55,12 +54,10 @@ Future<void> onSelectedAppBarValues(
       confirmDeletionDialog(context, service);
       break;
     case AppBarValues.about:
-      if (kDebugMode) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AboutRoute()),
-        );
-      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AboutRoute()),
+      );
       break;
     default:
       throw Exception('Unknown AppBarValues');
