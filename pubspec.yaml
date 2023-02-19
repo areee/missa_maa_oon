@@ -40,7 +40,7 @@ flutter:
 
 flutter_icons:
   android: false
-  ios: false
+  ios: true
   image_path: 'assets/source-icon.png'
   web:
     generate: false
