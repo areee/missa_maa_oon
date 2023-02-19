@@ -2,7 +2,7 @@ name: missa_maa_oon
 description: Tallenna nykyinen sijaintisi. Save your current location.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.2.0+1
+version: 0.2.1+1
 
 _author: Arttu Ylhävuori
 
