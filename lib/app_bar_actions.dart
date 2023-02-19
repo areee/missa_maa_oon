@@ -12,7 +12,7 @@ void confirmDeletionDialog(BuildContext context, IsarService service) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Haluatko varmasti poistaa kaikki tiedot?'),
+        title: const Text('Haluatko varmasti poistaa kaikki sijainnit?'),
         actions: [
           TextButton(
             child: const Text('Peruuta'),
@@ -27,7 +27,7 @@ void confirmDeletionDialog(BuildContext context, IsarService service) {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Kaikki tiedot poistettu'),
+                  content: Text('Kaikki sijainnit poistettu'),
                 ),
               );
             },
