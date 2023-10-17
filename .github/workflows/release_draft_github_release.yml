@@ -31,9 +31,10 @@ jobs:
       - run: flutter doctor -v
       # Checkout gallery code, recreate missing files, and get packages.
       - name: Checkout gallery code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - run: flutter create .
       - run: flutter pub get
+      - run: dart run pubspec_extract
 
       - name: Configure Keystore for Android
         run: |
