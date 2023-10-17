@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:missa_maa_oon/entities/position.dart';
+import 'package:path_provider/path_provider.dart';
 
 class IsarService {
   late Future<Isar> _db;
@@ -50,7 +51,8 @@ class IsarService {
 
   Future<Isar> openDb() async {
     if (Isar.instanceNames.isEmpty) {
-      return await Isar.open([PositionSchema], inspector: true);
+      final dir = await getApplicationDocumentsDirectory();
+      return await Isar.open([PositionSchema], directory: dir.path, inspector: true);
     }
     return Future.value(Isar.getInstance());
   }
